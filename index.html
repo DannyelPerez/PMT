@@ -5,23 +5,50 @@
     <link type="text/css" rel="stylesheet" href="src/materialize/css/materialize.min.css"  media="screen,projection"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <style type="text/css">
-	.number {
-	    height: 50px;
-	    width: 50px;
-	    border-radius: 50%;
-	    text-align: center;
-	    color: white;
-	    margin: 2px;
-	    flex: 1;
-	    float: left;
+	.container{
+		background-color: white;
+		padding: 5%;
+		box-shadow: 2px 2px 2px 2px rgba(128, 128, 128, 0.46);
 	}
 </style>
 </head>
 
 <script src="src/js/angular.min.js"></script>
-<body>
+<body style="background-color: #fcfcfc;">
 	<div class="container" ng-app="myApp" ng-controller="appCtrl as vm">
-		
+		<div class="row">
+			<form class="col s12">
+				<div class="row">
+					<div class="input-field col s6">
+						<input type="number" min="0" class="validate" ng-model="vm.inputs.presentValue">
+						<label>Monto del Prestamo</label>
+					</div>
+					<div class="input-field col s6">
+						<input type="number" min="0" class="validate" ng-model="vm.inputs.rate">
+						<label>Tasa de interés mensual</label>
+					</div>
+					<div class="input-field col s6">
+						<input type="number" min="1" class="validate" ng-model="vm.inputs.numberOfPeriods">
+						<label>Plazo en meses</label>
+					</div>
+					<div class="col s6">
+						<a class="waves-effect waves-light btn right" ng-click="vm.evaluate()">
+							<i class="material-icons right">play_arrow</i>Calcular
+						</a>
+					</div>
+				</div>
+				<div class="row" style="background: #f5f2f0;">
+					<div class="input-field col s6">
+						<input style="color: black;" disabled type="number" min="0" class="validate" ng-model="vm.outputs.monthPay">
+						<label style="color: black;">Cuota mensual calculada</label>
+					</div>
+					<div class="input-field col s6">
+						<input style="color: black;" disabled type="number" min="0" class="validate" ng-model="vm.outputs.totalPay">
+						<label style="color: black;">Monto total a pagar</label>
+					</div>
+				</div>
+			</form>
+		</div>
 	</div>
 
 <script type="text/javascript" src="src/js/jquery-2.1.1.min.js"></script>
