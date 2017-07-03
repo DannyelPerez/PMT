@@ -1,4 +1,4 @@
-angular.module('myApp', []).controller('appCtrl', function($scope) {
+angular.module('myApp', []).controller('appCtrl', function($scope, $filter) {
 	var vm = this;
 
 	vm.inputs = {
@@ -12,12 +12,32 @@ angular.module('myApp', []).controller('appCtrl', function($scope) {
 		totalPay: 0
 	}
 
+	vm.tableResult = {
+		pmt: 0,
+		interest: 0,
+		amortisation: 0
+	}
+
+	vm.table = [];
+
 	vm.evaluate = function(){
 		vm.outputs.monthPay = PMT(vm.inputs.rate, 
 			vm.inputs.numberOfPeriods,vm.inputs.presentValue);
 		vm.outputs.totalPay = vm.outputs.monthPay * vm.inputs.numberOfPeriods;
-		vm.outputs.monthPay = Math.round(vm.outputs.monthPay * 100) / 100
-		vm.outputs.totalPay = Math.round(vm.outputs.totalPay * 100) / 100
+		fillTable();
+	}
+
+	function fillResults(){
+		vm.tableResult.pmt = 0;
+		vm.tableResult.amortisation = 0;
+		vm.tableResult.interest = 0;
+		for(let i = 0; i < vm.table.length; i++){
+			vm.tableResult.pmt += vm.table[i].pmt;
+			vm.tableResult.interest += vm.table[i].interest;
+			vm.tableResult.amortisation += vm.table[i].amortisation;
+		}
+		vm.outputs.monthPay = $filter('number')(vm.outputs.monthPay, 2);
+		vm.outputs.totalPay = $filter('number')(vm.outputs.totalPay, 2);
 	}
 
 	function PMT(rate, numberOfPeriods, presentValue, fv, type) {
@@ -32,6 +52,29 @@ angular.module('myApp', []).controller('appCtrl', function($scope) {
 		if (type === 1)
 			pmt /= (1 + rate);
 		return -(pmt);
+	}
+
+	function fillTable(){
+		vm.table.length = 0;
+		for(let i = 1; i <= vm.inputs.numberOfPeriods; i++){
+			let obj = {
+				month: i, rate: `${vm.inputs.rate} %`, pmt: vm.outputs.monthPay
+			}
+
+			if(i === 1){
+				obj.interest = vm.inputs.presentValue * (vm.inputs.rate / 100);
+				obj.amortisation = obj.pmt - obj.interest;
+				obj.balance = vm.inputs.presentValue - obj.amortisation;
+				vm.table.push(obj);
+				continue;
+			}
+
+			obj.interest = vm.table[i-2].balance * (vm.inputs.rate / 100);
+			obj.amortisation = obj.pmt - obj.interest;
+			obj.balance = vm.table[i-2].balance - obj.amortisation;
+			vm.table.push(obj);
+		}
+		fillResults();
 	}
 
 });
