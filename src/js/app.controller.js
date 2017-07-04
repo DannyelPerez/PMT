@@ -40,13 +40,13 @@ angular.module('myApp', []).controller('appCtrl', function($scope, $filter) {
 		vm.outputs.totalPay = $filter('number')(vm.outputs.totalPay, 2);
 	}
 
-	function PMT(rate, numberOfPeriods, presentValue, fv, type) {
+	function PMT(rate1, numberOfPeriods, presentValue, fv, type) {
 		let pmt, pvif;
 		fv || (fv = 0);
 		type || (type = 0);
-		if (rate === 0)
+		if (rate1 === 0)
 			return (presentValue + fv)/numberOfPeriods;
-		rate = rate / 100;
+		let rate = (rate1/12) / 100;
 		pvif = Math.pow(1 + rate, numberOfPeriods);
 		pmt = - rate * presentValue * (pvif + fv) / (pvif - 1);
 		if (type === 1)
