@@ -24,15 +24,15 @@
 			<form class="col s12">
 				<div class="row">
 					<div class="input-field col s6">
-						<input type="number" min="0" class="validate" ng-model="vm.inputs.presentValue">
+						<input type="number" min="0"  ng-model="vm.inputs.presentValue">
 						<label>Monto del Prestamo</label>
 					</div>
 					<div class="input-field col s6">
-						<input type="number" min="0" class="validate" ng-model="vm.inputs.rate">
+						<input type="number" min="0"  ng-model="vm.inputs.rateView" ng-keyup="vm.updateRate()">
 						<label>Tasa de interés anual %</label>
 					</div>
 					<div class="input-field col s6">
-						<input type="number" min="1" class="validate" ng-model="vm.inputs.numberOfPeriods">
+						<input type="number" min="1"  ng-model="vm.inputs.numberOfPeriods">
 						<label>Plazo en meses</label>
 					</div>
 					<div class="col s8" style="float: right;">
@@ -42,11 +42,11 @@
 				</div>
 				<div class="row" style="background: #f5f2f0;">
 					<div class="input-field col s6">
-						<input style="color: black;" disabled type="text" min="0" class="validate" ng-model="vm.outputs.monthPay">
+						<input style="color: black;" disabled type="text" min="0"  ng-model="vm.outputs.monthPay">
 						<label style="color: black;">Cuota mensual calculada</label>
 					</div>
 					<div class="input-field col s6">
-						<input style="color: black;" disabled type="text" min="0" class="validate" ng-model="vm.outputs.totalPay">
+						<input style="color: black;" disabled type="text" min="0"  ng-model="vm.outputs.totalPay">
 						<label style="color: black;">Monto total a pagar</label>
 					</div>
 				</div>

@@ -4,7 +4,8 @@ angular.module('myApp', []).controller('appCtrl', function($scope, $filter) {
 	vm.inputs = {
 		presentValue: 0,
 		rate: 0,
-		numberOfPeriods: 0
+		numberOfPeriods: 0,
+		rateView: 0
 	}
 
 	vm.outputs = {
@@ -26,6 +27,10 @@ angular.module('myApp', []).controller('appCtrl', function($scope, $filter) {
 		vm.outputs.totalPay = vm.outputs.monthPay * vm.inputs.numberOfPeriods;
 		fillTable();
 	}
+    
+	vm.updateRate = function(){
+		vm.inputs.rate = vm.inputs.rateView / 12;
+	}
 
 	function fillResults(){
 		vm.tableResult.pmt = 0;
@@ -40,13 +45,13 @@ angular.module('myApp', []).controller('appCtrl', function($scope, $filter) {
 		vm.outputs.totalPay = $filter('number')(vm.outputs.totalPay, 2);
 	}
 
-	function PMT(rate1, numberOfPeriods, presentValue, fv, type) {
+	function PMT(rate, numberOfPeriods, presentValue, fv, type) {
 		let pmt, pvif;
 		fv || (fv = 0);
 		type || (type = 0);
-		if (rate1 === 0)
+		if (rate === 0)
 			return (presentValue + fv)/numberOfPeriods;
-		let rate = (rate1/12) / 100;
+	    rate = rate / 100;
 		pvif = Math.pow(1 + rate, numberOfPeriods);
 		pmt = - rate * presentValue * (pvif + fv) / (pvif - 1);
 		if (type === 1)
@@ -58,7 +63,7 @@ angular.module('myApp', []).controller('appCtrl', function($scope, $filter) {
 		vm.table.length = 0;
 		for(let i = 1; i <= vm.inputs.numberOfPeriods; i++){
 			let obj = {
-				month: i, rate: `${vm.inputs.rate} %`, pmt: vm.outputs.monthPay
+				month: i, rate: `${vm.inputs.rateView} %`, pmt: vm.outputs.monthPay
 			}
 
 			if(i === 1){
