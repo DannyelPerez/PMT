@@ -1,3 +1,3 @@
 # PMT
 Free calculator of fixed quota
-https://dannyelperez.github.io/PMT/
+https://iamdperez.github.io/PMT/
